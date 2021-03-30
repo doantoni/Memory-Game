@@ -12,11 +12,19 @@ const img11 = "https://images.unsplash.com/photo-1588361732075-e5e4a36c0d35?ixid
 const img12 = "https://images.unsplash.com/photo-1511282491208-d9b80e3deaee?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Nzd8fGFuaW1hbHxlbnwwfDJ8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
 
 let chosenImgs = [];
+let isTime = true;
 
 let resetBtn = document.querySelector("button");
 
 
 const cards = document.querySelectorAll(".cards");
+
+let messageDisplay = document.querySelector("#message");
+
+let tries = document.querySelector("#tries")
+tries.textContent = `Tries: 0`
+
+let triesNum = 0;
 
 
 function randomImg(){
@@ -28,10 +36,17 @@ function randomImg(){
 chosenImgs[0]=variableName();
 chosenImgs[1]=variableName();
 chosenImgs[2]=variableName();
+chosenImgs[3]=variableName();
+chosenImgs[4]=variableName();
+chosenImgs[5]=variableName();
 
 let allImgs = chosenImgs;
 
-allImgs.push(chosenImgs[0], chosenImgs[1], chosenImgs[2]);
+function pushImgs(){
+  allImgs.push(chosenImgs[0], chosenImgs[1], chosenImgs[2], chosenImgs[3], chosenImgs[4], chosenImgs[5]);
+}
+
+pushImgs();
 
 function variableName (){
     let stringVar = eval(randomImg());
@@ -62,50 +77,121 @@ shuffle(allImgs);
 
 let compareCards = [];
 
-for (let i=0; i<cards.length; i++){
-  cards[i].addEventListener("click", function(){
-    this.style.backgroundImage = `url(${allImgs[i]})`;
-    if (cards[i].style.backgroundImage !== ""){
-      compareCards.push(cards[i].style.backgroundImage);
-    }
-    if (compareCards.length == 2){
-      if (compareCards[0] !== compareCards[1]){
-        setTimeout(hideImgs, 1000);
-        compareCards = [];
-      } 
-    }
-    if (compareCards.length == 4) {
-      if(compareCards[2] !== compareCards[3]){
-        setTimeout(hideImgs, 1000);
-        compareCards = [];
+
+  for (let i=0; i<cards.length; i++){
+    cards[i].addEventListener("click", function(){
+      if (isTime == true){
+      this.style.backgroundImage = `url(${allImgs[i]})`;
+      this.textContent = "";
+      if (cards[i].style.backgroundImage !== ""){
+        compareCards.push(cards[i].style.backgroundImage);
       }
+      if (compareCards.length == 2){
+        if (compareCards[0] !== compareCards[1]){
+          isTime = false;
+          setTimeout(hideImgs, 1500);
+          compareCards = [];
+          messageDisplay.textContent = "Not quite";
+          triesNum += 1;
+        } else { 
+           triesNum +=1;
+      } tries.textContent = `Tries: ${triesNum}`;
+      } 
+      
+      
+      if (compareCards.length == 4) {
+        if(compareCards[2] !== compareCards[3]){
+          isTime = false;
+          setTimeout(hideImgs, 1500);
+          compareCards = [];
+          messageDisplay.textContent = "Try again";
+         triesNum += 1;
+        } else { triesNum +=1;
+      }  tries.textContent = `Tries: ${triesNum}`;
+        } 
+      
+      if (compareCards.length == 6) {
+        if(compareCards[4] !== compareCards[5]){
+          isTime = false;
+          setTimeout(hideImgs, 1500);
+          compareCards = [];
+          messageDisplay.textContent = "Too bad...";
+          triesNum += 1;
+        } else { triesNum +=1;
+      }tries.textContent = `Tries: ${triesNum}`;
+        }
+      
+      if (compareCards.length == 8) {
+        if(compareCards[6] !== compareCards[7]){
+          isTime = false;
+          setTimeout(hideImgs, 1500);
+          compareCards = [];
+          messageDisplay.textContent = "Oh man, you were so close";
+          triesNum += 1;
+        } else { triesNum +=1;
+      }  tries.textContent = `Tries: ${triesNum}`;
+        }
+      
+      if (compareCards.length == 10) {
+        if(compareCards[8] !== compareCards[9]){
+          isTime = false;
+          setTimeout(hideImgs, 1500);
+          compareCards = [];
+          messageDisplay.textContent = "Oh come on, now you have to start over :(";
+          triesNum += 1;
+          tries.textContent = triesNum;
+        } else { triesNum +=1;
+          messageDisplay.textContent = "You've basically won now :D"
+      }  tries.textContent = `Tries: ${triesNum}`;
+        }
+      
+        if (compareCards.length == 12) {
+          if(compareCards[10] !== compareCards[11]){
+            isTime = false;
+            setTimeout(hideImgs, 1500);
+            compareCards = [];
+            messageDisplay.textContent = "";
+            triesNum += 1;
+            tries.textContent = triesNum;
+          } else { triesNum +=1;
+            messageDisplay.textContent = "Congratulations, you won!";
+        }  tries.textContent = `It took you: ${triesNum} tries`;
+          }
     }
-    
-  }) 
- 
+    })  
     }
+
+
     
  function hideImgs (){
-   for (i=0 ; i<cards.length ; i++){
+   for (let i=0 ; i<cards.length ; i++){
      cards[i].style.backgroundImage = "none";
+     cards[i].textContent = i + 1;
+     isTime = true;
+     messageDisplay.textContent = "";
    }
  }
     
  function reset(){
    for(i=0; i<cards.length ; i++){
-    cards[i].style.backgroundImage = "none";  
+    cards[i].style.backgroundImage = "none";
+    cards[i].textContent = i + 1;  
    }
    chosenImgs = [];
-  
-   randomImg();
    chosenImgs[0]=variableName();
 chosenImgs[1]=variableName();
 chosenImgs[2]=variableName();
+chosenImgs[3]=variableName();
+chosenImgs[4]=variableName();
+chosenImgs[5]=variableName();
 allImgs = [];
 allImgs = chosenImgs;
-allImgs.push(chosenImgs[0], chosenImgs[1], chosenImgs[2]);
+pushImgs();
 shuffle(allImgs);
 compareCards = [];
+triesNum = 0;
+tries.textContent = `Tries: ${triesNum}`;
+messageDisplay.textContent = "";
  }
 
 resetBtn.addEventListener("click", function(){
