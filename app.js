@@ -106,101 +106,112 @@ let compareCards = [];
 for (let i = 0; i < cards.length; i++) {
   cards[i].addEventListener("click", function () {
     if (isTime == true) {
-      this.style.backgroundImage = `url(${chosenImgs[i]})`;
+      this.style.transform = "rotateY(180deg)";
       this.textContent = "";
-      if (cards[i].style.backgroundImage !== "") {
-        compareCards.push(cards[i].style.backgroundImage);
-      }
-      if (compareCards.length == 2) {
-        if (compareCards[0] !== compareCards[1]) {
-          isTime = false;
-          setTimeout(hideImgs, 1500);
-          compareCards = [];
-          messageDisplay.textContent = "Not quite";
-          triesNum += 1;
-        } else {
-          triesNum += 1;
-        }
-        tries.textContent = `Tries: ${triesNum}`;
-      }
+      function compareImgs() {
+        cards[i].style.backgroundImage = `url(${chosenImgs[i]})`;
 
-      if (compareCards.length == 4) {
-        if (compareCards[2] !== compareCards[3]) {
-          isTime = false;
-          setTimeout(hideImgs, 1500);
-          compareCards = [];
-          messageDisplay.textContent = "Try again";
-          triesNum += 1;
-        } else {
-          triesNum += 1;
+        if (cards[i].style.backgroundImage !== "") {
+          compareCards.push(cards[i].style.backgroundImage);
         }
-        tries.textContent = `Tries: ${triesNum}`;
-      }
+        if (compareCards.length == 2) {
+          if (compareCards[0] !== compareCards[1]) {
+            isTime = false;
+            setTimeout(hideImgs, 1500);
+            compareCards = [];
+            messageDisplay.textContent = "Not quite";
+            triesNum += 1;
+          } else {
+            triesNum += 1;
+          }
+          tries.textContent = `Tries: ${triesNum}`;
+        }
 
-      if (compareCards.length == 6) {
-        if (compareCards[4] !== compareCards[5]) {
-          isTime = false;
-          setTimeout(hideImgs, 1500);
-          compareCards = [];
-          messageDisplay.textContent = "Too bad...";
-          triesNum += 1;
-        } else {
-          triesNum += 1;
+        if (compareCards.length == 4) {
+          if (compareCards[2] !== compareCards[3]) {
+            isTime = false;
+            setTimeout(hideImgs, 1500);
+            compareCards = [];
+            messageDisplay.textContent = "Try again";
+            triesNum += 1;
+          } else {
+            triesNum += 1;
+          }
+          tries.textContent = `Tries: ${triesNum}`;
         }
-        tries.textContent = `Tries: ${triesNum}`;
-      }
 
-      if (compareCards.length == 8) {
-        if (compareCards[6] !== compareCards[7]) {
-          isTime = false;
-          setTimeout(hideImgs, 1500);
-          compareCards = [];
-          messageDisplay.textContent = "Oh man, you were so close";
-          triesNum += 1;
-        } else {
-          triesNum += 1;
+        if (compareCards.length == 6) {
+          if (compareCards[4] !== compareCards[5]) {
+            isTime = false;
+            setTimeout(hideImgs, 1500);
+            compareCards = [];
+            messageDisplay.textContent = "Too bad...";
+            triesNum += 1;
+          } else {
+            triesNum += 1;
+          }
+          tries.textContent = `Tries: ${triesNum}`;
         }
-        tries.textContent = `Tries: ${triesNum}`;
-      }
 
-      if (compareCards.length == 10) {
-        if (compareCards[8] !== compareCards[9]) {
-          isTime = false;
-          setTimeout(hideImgs, 1500);
-          compareCards = [];
-          messageDisplay.textContent =
-            "Oh come on, now you have to start over :(";
-          triesNum += 1;
-          tries.textContent = triesNum;
-        } else {
-          triesNum += 1;
-          messageDisplay.textContent = "You've basically won now :D";
+        if (compareCards.length == 8) {
+          if (compareCards[6] !== compareCards[7]) {
+            isTime = false;
+            setTimeout(hideImgs, 1500);
+            compareCards = [];
+            messageDisplay.textContent = "Oh man, you were so close";
+            triesNum += 1;
+          } else {
+            triesNum += 1;
+          }
+          tries.textContent = `Tries: ${triesNum}`;
         }
-        tries.textContent = `Tries: ${triesNum}`;
-      }
 
-      if (compareCards.length == 12) {
-        if (compareCards[10] !== compareCards[11]) {
-          isTime = false;
-          setTimeout(hideImgs, 1500);
-          compareCards = [];
-          messageDisplay.textContent = "";
-          triesNum += 1;
-          tries.textContent = triesNum;
-        } else {
-          triesNum += 1;
-          messageDisplay.textContent = "Congratulations, you won!";
+        if (compareCards.length == 10) {
+          if (compareCards[8] !== compareCards[9]) {
+            isTime = false;
+            setTimeout(hideImgs, 1500);
+            compareCards = [];
+            messageDisplay.textContent =
+              "Oh come on, now you have to start over :(";
+            triesNum += 1;
+            tries.textContent = triesNum;
+          } else {
+            triesNum += 1;
+            messageDisplay.textContent = "You've basically won now :D";
+          }
+          tries.textContent = `Tries: ${triesNum}`;
         }
-        tries.textContent = `It took you: ${triesNum} tries`;
+
+        if (compareCards.length == 12) {
+          if (compareCards[10] !== compareCards[11]) {
+            isTime = false;
+            setTimeout(hideImgs, 1500);
+            compareCards = [];
+            messageDisplay.textContent = "";
+            triesNum += 1;
+            tries.textContent = triesNum;
+          } else {
+            triesNum += 1;
+            messageDisplay.textContent = "Congratulations, you won!";
+          }
+          tries.textContent = `It took you: ${triesNum} tries`;
+        }
       }
+      setTimeout(compareImgs, 300);
     }
   });
 }
 
 function hideImgs() {
   for (let i = 0; i < cards.length; i++) {
-    cards[i].style.backgroundImage = "none";
-    cards[i].textContent = i + 1;
+    cards[i].style.transform = "rotateY(0deg)";
+    function flipBack() {
+      cards[i].style.backgroundImage = "none";
+      cards[i].textContent = i + 1;
+    }
+
+    setTimeout(flipBack, 300);
+
     isTime = true;
     messageDisplay.textContent = "";
   }
@@ -208,6 +219,8 @@ function hideImgs() {
 
 function reset() {
   for (i = 0; i < cards.length; i++) {
+    cards[i].style.transform = "rotateY(0deg)";
+
     cards[i].style.backgroundImage = "none";
     cards[i].textContent = i + 1;
   }
